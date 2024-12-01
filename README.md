@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/56da2e59-c405-4bfd-8a14-6452dcd62380)## Prototype Development for Image Generation Using the Stable Diffusion Model and Gradio Framework
+## Prototype Development for Image Generation Using the Stable Diffusion Model and Gradio Framework
 
 ### AIM:
 To design and deploy a prototype application for image generation utilizing the Stable Diffusion model, integrated with the Gradio UI framework for interactive user engagement and evaluation.
