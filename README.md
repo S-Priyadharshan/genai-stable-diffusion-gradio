@@ -1,20 +1,84 @@
-## Prototype Development for Image Generation Using the Stable Diffusion Model and Gradio Framework
+![image](https://github.com/user-attachments/assets/56da2e59-c405-4bfd-8a14-6452dcd62380)## Prototype Development for Image Generation Using the Stable Diffusion Model and Gradio Framework
 
 ### AIM:
 To design and deploy a prototype application for image generation utilizing the Stable Diffusion model, integrated with the Gradio UI framework for interactive user engagement and evaluation.
 
 ### PROBLEM STATEMENT:
+The task involves creating a user-friendly interface where users can input text descriptions (prompts) to generate high-quality, realistic images using the Stable Diffusion model. The prototype aims to demonstrate the capabilities of the model while ensuring ease of interaction through Gradio.
+
 
 ### DESIGN STEPS:
 
 #### STEP 1:
+Install the required libraries (diffusers, transformers, torch, gradio).
+Verify GPU support for running Stable Diffusion.
 
 #### STEP 2:
+Use the diffusers library to load the Stable Diffusion pipeline.
 
 #### STEP 3:
+Design the user interface to accept text prompts and generate corresponding images.
+Add parameters for customization (e.g., number of inference steps, guidance scale).
 
 ### PROGRAM:
 
+```python
+
+# Import required libraries
+import torch
+from diffusers import StableDiffusionPipeline
+import gradio as gr
+
+# Step 1: Load the Stable Diffusion model
+def load_model():
+    model_id = "runwayml/stable-diffusion-v1-5"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+    pipe = pipe.to(device)
+    return pipe
+
+# Initialize the pipeline
+pipe = load_model()
+
+# Step 2: Define the image generation function
+def generate_image(prompt, num_inference_steps=50, guidance_scale=7.5):
+    """
+    Generates an image based on the text prompt using Stable Diffusion.
+    """
+    image = pipe(prompt, num_inference_steps=num_inference_steps, guidance_scale=guidance_scale).images[0]
+    return image
+
+# Step 3: Set up Gradio Interface
+def main():
+    with gr.Blocks() as demo:
+        gr.Markdown("## Stable Diffusion Image Generator")
+        
+        # Input elements
+        prompt = gr.Textbox(label="Enter your prompt", placeholder="Describe the image you'd like to generate")
+        num_steps = gr.Slider(10, 100, value=50, step=1, label="Number of Inference Steps")
+        guidance = gr.Slider(1.0, 20.0, value=7.5, step=0.5, label="Guidance Scale")
+        
+        # Output element
+        output_image = gr.Image(label="Generated Image")
+        
+        # Button to generate image
+        generate_btn = gr.Button("Generate Image")
+        
+        # Define button behavior
+        generate_btn.click(fn=generate_image, inputs=[prompt, num_steps, guidance], outputs=output_image)
+    
+    # Launch the app
+    demo.launch()
+
+# Run the Gradio app
+if __name__ == "__main__":
+    main()
+```
+
+
 ### OUTPUT:
 
+![image](https://github.com/user-attachments/assets/09fddf80-a961-4700-a8ba-547ccd6e0a6f)
+
 ### RESULT:
+The prototype successfully demonstrates text-to-image generation using Stable Diffusion, providing an interactive and user-friendly interface. Users can modify parameters to influence the output quality and style.
